@@ -5,7 +5,7 @@
 Para iniciar o jogo com a interface gráfica, execute:
 
 ```bash
-java ui.TelaInicial
+java -cp bin ui.TelaInicial
 ```
 
 ## Recursos
