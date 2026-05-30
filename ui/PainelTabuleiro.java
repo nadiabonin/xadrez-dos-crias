@@ -32,10 +32,15 @@ public class PainelTabuleiro extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 int x = (e.getX() - PADDING) / TAMANHO_BLOCO;
                 int y = (e.getY() - PADDING) / TAMANHO_BLOCO;
-
                 if (x >= 0 && x < 8 && y >= 0 && y < 8) {
                     jogo.selecionar(y, x);
                     repaint();
+                    // Notifica a janela para checar fim de jogo e atualizar turno
+                    SwingUtilities.getWindowAncestor(PainelTabuleiro.this);
+                    Window janela = SwingUtilities.getWindowAncestor(PainelTabuleiro.this);
+                    if (janela instanceof JanelaJogo) {
+                        ((JanelaJogo) janela).atualizar();
+                    }
                 }
             }
         });

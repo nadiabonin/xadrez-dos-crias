@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import jogo.Bot;
 import jogo.Jogador;
 import jogo.Jogo;
 import persistencia.SaveGame;
@@ -100,25 +99,22 @@ public class JanelaJogo extends JFrame implements KeyListener {
     }
 
     public void atualizar() {
+        // Verifica fim de jogo
+        if (jogo.isJogoEncerrado()) {
+            painelTabuleiro.repaint();
+            JOptionPane.showMessageDialog(this,
+                "Fim de jogo! Vencedor: " + jogo.getVencedor(),
+                "Fim de Jogo",
+                JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            SwingUtilities.invokeLater(() -> TelaInicial.main(new String[]{}));
+            return;
+        }
+
         Jogador jogadorAtual = jogo.getJogadorAtual();
         String cor = jogadorAtual.getCor().equals("branco") ? "⚪ Branco" : "⚫ Preto";
         labelTurno.setText("Turno: " + cor);
-
-        if (jogo.isModoBot() && (jogadorAtual instanceof Bot || jogadorAtual instanceof jogo.BotMinimax)) {
-            labelInfo.setText("<html>Bot pensando...</html>");
-            // Aguardar movimento do bot
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                painelTabuleiro.repaint();
-            });
-        } else {
-            labelInfo.setText("<html>Escolha uma peça</html>");
-        }
-
+        labelInfo.setText("<html>Escolha uma peça</html>");
         painelTabuleiro.repaint();
     }
 
